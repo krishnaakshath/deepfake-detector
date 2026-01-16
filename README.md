@@ -23,9 +23,9 @@
 
 ## 🖥️ Demo
 
-| Frontend (GitHub Pages) | Backend API (Render) |
-|-------------------------|----------------------|
-| [![Frontend](https://img.shields.io/badge/Live-App-blue?style=for-the-badge&logo=github)](https://capgarrick.github.io/deepfake-detector/) | [![Backend](https://img.shields.io/badge/API-Server-green?style=for-the-badge&logo=render)](https://deepguard-api-d568.onrender.com) |
+| Frontend (Vercel) | Backend API (Render) |
+|-------------------|----------------------|
+| [![Frontend](https://img.shields.io/badge/Live-App-black?style=for-the-badge&logo=vercel)](https://deepfake-detector.vercel.app/) | [![Backend](https://img.shields.io/badge/API-Server-green?style=for-the-badge&logo=render)](https://deepguard-api-d568.onrender.com) |
 
 > **Note:** The backend on Render may spin down after inactivity. Allow 50-60 seconds for the first request.
 
