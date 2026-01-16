@@ -1820,3 +1820,263 @@ button {
         height: 54px;
     }
 }
+
+/* ==================== Learning Center Section ==================== */
+.learn-section {
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.learn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.learn-card {
+    padding: var(--spacing-xl);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    transition: all var(--transition-base);
+}
+
+.learn-card:hover {
+    border-color: var(--secondary);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(6, 182, 212, 0.15);
+}
+
+.learn-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.learn-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+.resource-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.resource-list li {
+    padding: var(--spacing-xs) 0;
+}
+
+.resource-list a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.resource-list a::before {
+    content: '→';
+    color: var(--secondary);
+}
+
+.resource-list a:hover {
+    color: var(--secondary);
+}
+
+/* ==================== Analysis History Section ==================== */
+.history-section {
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.history-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.history-empty {
+    text-align: center;
+    padding: var(--spacing-3xl);
+    background: var(--glass-bg);
+    border: 1px dashed var(--glass-border);
+    border-radius: var(--radius-xl);
+}
+
+.history-empty .empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--spacing-md);
+}
+
+.history-empty p {
+    color: var(--text-muted);
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+}
+
+.history-item:hover {
+    border-color: var(--primary);
+}
+
+.history-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.history-info {
+    flex: 1;
+}
+
+.history-filename {
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.history-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.history-score {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.history-score.authentic {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.history-score.uncertain {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+}
+
+.history-score.fake {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.history-actions {
+    display: flex;
+    justify-content: center;
+}
+
+/* ==================== Share Results ==================== */
+.share-section {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--glass-border);
+}
+
+.share-title {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-md);
+}
+
+.share-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+}
+
+.share-btn.twitter {
+    background: #1DA1F2;
+    color: white;
+}
+
+.share-btn.linkedin {
+    background: #0A66C2;
+    color: white;
+}
+
+.share-btn.copy {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.share-btn.copy:hover {
+    border-color: var(--primary);
+}
+
+/* ==================== Export Button ==================== */
+.btn-export {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.btn-export:hover {
+    border-color: var(--secondary);
+    background: rgba(6, 182, 212, 0.1);
+}
+
+/* ==================== Stats Counter Animation ==================== */
+.stat-counter {
+    font-variant-numeric: tabular-nums;
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-count {
+    animation: countUp 0.5s ease forwards;
+}
