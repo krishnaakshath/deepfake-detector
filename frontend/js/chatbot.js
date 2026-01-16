@@ -148,6 +148,85 @@ function handleInputChange() {
     chatbotElements.send.disabled = !hasText;
 }
 
+// ==================== OFFLINE KNOWLEDGE BASE ====================
+const OFFLINE_RESPONSES = {
+    'deepfake': {
+        response: "**What is a Deepfake?**\n\nA deepfake is synthetic media created using AI/ML techniques like deep learning. The term combines \"deep learning\" and \"fake.\"\n\n**Common Types:**\n• **Face swaps** - Replacing one person's face with another\n• **Lip sync** - Making someone appear to say different words\n• **Voice cloning** - Synthesizing someone's voice\n• **Full-body puppetry** - Controlling someone's entire appearance",
+        suggestions: ["How are deepfakes made?", "How to detect them?", "What are the risks?"]
+    },
+    'detect': {
+        response: "**How to Detect Deepfakes:**\n\n👁️ **Visual Signs:**\n• Unnatural blinking or eye movements\n• Blurry face edges or hairline\n• Inconsistent lighting/shadows\n• Skin texture irregularities\n\n👂 **Audio Signs:**\n• Robotic or unnatural voice patterns\n• Mismatched lip movements\n• Unusual breathing patterns\n\n🔧 **Tools:**\n• Use DeepGuard to analyze suspicious media\n• Reverse image search\n• Check the source credibility",
+        suggestions: ["Protection tips", "What is a deepfake?", "How do I report one?"]
+    },
+    'protect': {
+        response: "**Protection Tips:**\n\n🛡️ **Stay Safe:**\n1. **Be skeptical** - Question unusual or shocking content\n2. **Verify sources** - Check multiple reliable sources\n3. **Limit exposure** - Be careful sharing personal photos/videos\n4. **Use detection tools** - Regularly analyze suspicious content\n5. **Stay informed** - Keep up with deepfake technology advances\n\n📱 **If you find a deepfake:**\n• Don't share it further\n• Report to the platform\n• Alert the targeted person\n• Document the source",
+        suggestions: ["What is a deepfake?", "How to detect them?", "What are the risks?"]
+    },
+    'risk': {
+        response: "**Risks and Dangers of Deepfakes:**\n\n⚠️ **Personal Harm:**\n• Non-consensual intimate imagery\n• Identity theft and fraud\n• Reputation damage\n• Emotional distress\n\n🏛️ **Societal Impact:**\n• Political manipulation\n• Election interference\n• Fake news spread\n• Erosion of trust in media\n\n💼 **Financial:**\n• CEO fraud scams\n• Stock manipulation\n• Blackmail/extortion",
+        suggestions: ["How to protect myself?", "Laws about deepfakes", "How to detect them?"]
+    },
+    'law': {
+        response: "**Deepfake Laws & Regulations:**\n\n🇺🇸 **United States:**\n• DEEPFAKES Accountability Act (proposed)\n• State laws in CA, TX, VA, NY\n• Section 230 debates ongoing\n\n🇪🇺 **European Union:**\n• AI Act includes deepfake provisions\n• GDPR for data protection\n• Digital Services Act\n\n🌍 **Global:**\n• Varies widely by country\n• Many nations developing legislation\n• International cooperation efforts",
+        suggestions: ["What are the risks?", "How to report deepfakes?", "Protection tips"]
+    },
+    'how made': {
+        response: "**How Deepfakes Are Made:**\n\n🤖 **Technology:**\n• **GANs** (Generative Adversarial Networks)\n• **Autoencoders** for face swapping\n• **Neural networks** for voice cloning\n\n📊 **Process:**\n1. Collect training data (photos/videos/audio)\n2. Train AI model on the data\n3. Generate synthetic content\n4. Refine and post-process\n\n⏱️ **Requirements:**\n• Lots of source material\n• Powerful computing (GPUs)\n• Technical knowledge\n• Time for training",
+        suggestions: ["How to detect them?", "What are the risks?", "Protection tips"]
+    },
+    'guardbot': {
+        response: "**About DeepGuard:**\n\n🛡️ **What We Do:**\nDeepGuard is an AI-powered deepfake detection system that analyzes videos and audio for signs of manipulation.\n\n🔬 **Our Technology:**\n• **CNN Video Analysis** - Detects visual artifacts\n• **Spectral Audio Analysis** - Identifies voice patterns\n• **468-Point Face Tracking** - Analyzes facial movements\n\n🎯 **Our Mission:**\nTo help people identify fake media and protect digital truth.",
+        suggestions: ["How to use DeepGuard?", "What is a deepfake?", "Protection tips"]
+    },
+    'default': {
+        response: "I can help you learn about deepfakes! Here are some topics I can assist with:\n\n• **Understanding deepfakes** - What they are and how they work\n• **Detection techniques** - How to spot fake media\n• **Protection tips** - How to stay safe\n• **Laws & regulations** - Legal landscape\n• **Using DeepGuard** - How our tool works\n\nWhat would you like to know more about?",
+        suggestions: ["What is a deepfake?", "How to detect them?", "Protection tips"]
+    }
+};
+
+/**
+ * Get offline response based on user message
+ */
+function getOfflineResponse(message) {
+    const lowerMessage = message.toLowerCase();
+
+    if (lowerMessage.includes('deepfake') || lowerMessage.includes('what is') || lowerMessage.includes('what are')) {
+        return OFFLINE_RESPONSES['deepfake'];
+    }
+    if (lowerMessage.includes('detect') || lowerMessage.includes('spot') || lowerMessage.includes('identify') || lowerMessage.includes('tell')) {
+        return OFFLINE_RESPONSES['detect'];
+    }
+    if (lowerMessage.includes('protect') || lowerMessage.includes('safe') || lowerMessage.includes('tip')) {
+        return OFFLINE_RESPONSES['protect'];
+    }
+    if (lowerMessage.includes('risk') || lowerMessage.includes('danger') || lowerMessage.includes('harm')) {
+        return OFFLINE_RESPONSES['risk'];
+    }
+    if (lowerMessage.includes('law') || lowerMessage.includes('legal') || lowerMessage.includes('regulation')) {
+        return OFFLINE_RESPONSES['law'];
+    }
+    if (lowerMessage.includes('made') || lowerMessage.includes('create') || lowerMessage.includes('how are')) {
+        return OFFLINE_RESPONSES['how made'];
+    }
+    if (lowerMessage.includes('deepguard') || lowerMessage.includes('guardbot') || lowerMessage.includes('this tool')) {
+        return OFFLINE_RESPONSES['guardbot'];
+    }
+    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+        return {
+            response: "Hello! 👋 I'm GuardBot, your AI assistant for deepfake education. How can I help you today?",
+            suggestions: ["What is a deepfake?", "How to detect them?", "Protection tips"]
+        };
+    }
+    if (lowerMessage.includes('thank')) {
+        return {
+            response: "You're welcome! 😊 Stay vigilant and remember - critical thinking is your best defense against deepfakes. Is there anything else you'd like to know?",
+            suggestions: ["What is a deepfake?", "Protection tips", "Laws about deepfakes"]
+        };
+    }
+
+    return OFFLINE_RESPONSES['default'];
+}
+
 /**
  * Send message to chatbot
  */
@@ -184,7 +263,7 @@ async function sendMessage() {
         hideTypingIndicator();
 
         if (data.success) {
-            // Simulate typing effect
+            // Show response from server
             await typeMessage(data.response);
 
             // Show suggestions
@@ -192,14 +271,19 @@ async function sendMessage() {
                 showSuggestions(data.suggestions);
             }
         } else {
-            addBotMessage("I'm sorry, I couldn't process that. Please try again!");
-            showDefaultSuggestions();
+            // Fallback to offline mode
+            const offlineData = getOfflineResponse(message);
+            await typeMessage(offlineData.response);
+            showSuggestions(offlineData.suggestions);
         }
     } catch (error) {
-        console.error('Chat error:', error);
+        console.warn('Server unavailable, using offline mode:', error.message);
         hideTypingIndicator();
-        addBotMessage("I'm having trouble connecting. Please make sure the server is running!");
-        showDefaultSuggestions();
+
+        // Use offline fallback
+        const offlineData = getOfflineResponse(message);
+        await typeMessage(offlineData.response);
+        showSuggestions(offlineData.suggestions);
     }
 }
 
