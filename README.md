@@ -23,7 +23,11 @@
 
 ## 🖥️ Demo
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-purple.svg)](https://your-deployment-url.com)
+| Frontend (GitHub Pages) | Backend API (Render) |
+|-------------------------|----------------------|
+| [![Frontend](https://img.shields.io/badge/Live-App-blue?style=for-the-badge&logo=github)](https://capgarrick.github.io/deepfake-detector/) | [![Backend](https://img.shields.io/badge/API-Server-green?style=for-the-badge&logo=render)](https://deepguard-api-d568.onrender.com) |
+
+> **Note:** The backend on Render may spin down after inactivity. Allow 50-60 seconds for the first request.
 
 ## 🚀 Quick Start
 

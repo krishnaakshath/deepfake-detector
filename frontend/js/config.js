@@ -7,7 +7,7 @@
 const IS_DEPLOYED = true;
 
 // Your deployed backend URL (update this after deploying to Render)
-const DEPLOYED_API_URL = 'https://deepguard-api.onrender.com';
+const DEPLOYED_API_URL = 'https://deepguard-api-d568.onrender.com';
 
 // Local development URL
 const LOCAL_API_URL = 'http://localhost:8000';
