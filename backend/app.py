@@ -20,7 +20,8 @@ from models.video_detector import VideoDeepfakeDetector
 from models.audio_detector import AudioDeepfakeDetector
 from models.face_analyzer import FaceLandmarkAnalyzer
 from models.chatbot import get_chat_response, get_quick_tips
-from utils.helpers import generate_report, get_protection_tips, validate_file_extension, sanitize_filename
+from models.chatbot import get_chat_response, get_quick_tips
+from utils.helpers import generate_report, get_protection_tips, validate_file_extension, sanitize_filename, convert_to_serializable
 from utils.preprocessing import extract_audio_from_video
 
 # Initialize FastAPI app
@@ -152,7 +153,7 @@ async def analyze_video(
             result['protection_tips'] = get_protection_tips(verdict)
             result['filename'] = file.filename
         
-        return JSONResponse(content=result)
+        return JSONResponse(content=convert_to_serializable(result))
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
@@ -199,7 +200,7 @@ async def analyze_audio(
             result['protection_tips'] = get_protection_tips(verdict)
             result['filename'] = file.filename
         
-        return JSONResponse(content=result)
+        return JSONResponse(content=convert_to_serializable(result))
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
@@ -251,14 +252,20 @@ async def analyze_full(
             face_result = face_analyzer_instance.analyze_video(filepath)
             
             # Try to extract and analyze audio
-            try:
-                audio_filepath = extract_audio_from_video(filepath)
-                if audio_filepath and os.path.exists(audio_filepath):
-                    audio_detector_instance = get_audio_detector()
-                    audio_result = audio_detector_instance.analyze_audio(audio_filepath)
-            except Exception:
-                # Audio extraction failed, continue without audio analysis
-                audio_result = {'success': False, 'error': 'Could not extract audio from video'}
+            # Skip for likely image files
+            is_image = filepath.lower().endswith(('.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff'))
+            
+            if not is_image:
+                try:
+                    audio_filepath = extract_audio_from_video(filepath)
+                    if audio_filepath and os.path.exists(audio_filepath):
+                        audio_detector_instance = get_audio_detector()
+                        audio_result = audio_detector_instance.analyze_audio(audio_filepath)
+                except Exception:
+                    # Audio extraction failed, continue without audio analysis
+                    audio_result = {'success': False, 'error': 'Could not extract audio from video'}
+            else:
+                audio_result = {'success': False, 'error': 'Image file - no audio analysis'}
         
         elif file_type == 'audio':
             # Audio-only analysis
@@ -277,7 +284,7 @@ async def analyze_full(
         verdict = report['overall_result'].get('verdict', 'uncertain')
         report['protection_tips'] = get_protection_tips(verdict)
         
-        return JSONResponse(content=report)
+        return JSONResponse(content=convert_to_serializable(report))
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")

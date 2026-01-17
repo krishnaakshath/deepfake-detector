@@ -26,15 +26,34 @@ class VideoDeepfakeDetector:
         self.frame_size = (224, 224)
         
     def extract_frames(self, video_path: str, max_frames: int = 30) -> List[np.ndarray]:
-        """Extract evenly spaced frames from video"""
+        """Extract evenly spaced frames from video, or reading single image"""
         frames = []
+        
+        # Check if it's an image file
+        image_extensions = {'.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff'}
+        ext = os.path.splitext(video_path)[1].lower()
+        
+        if ext in image_extensions:
+            frame = cv2.imread(video_path)
+            if frame is None:
+                raise ValueError(f"Could not open image: {video_path}")
+            return [frame]
+            
         cap = cv2.VideoCapture(video_path)
         
         if not cap.isOpened():
             raise ValueError(f"Could not open video: {video_path}")
         
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        frame_indices = np.linspace(0, total_frames - 1, max_frames, dtype=int)
+        if total_frames <= 0:
+            # Fallback for streams or problematic files
+            ret, frame = cap.read()
+            if ret:
+                frames.append(frame)
+            cap.release()
+            return frames
+            
+        frame_indices = np.linspace(0, total_frames - 1, min(total_frames, max_frames), dtype=int)
         
         for idx in frame_indices:
             cap.set(cv2.CAP_PROP_POS_FRAMES, idx)

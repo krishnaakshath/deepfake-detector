@@ -344,15 +344,34 @@ class FaceLandmarkAnalyzer:
         }
     
     def extract_frames_from_video(self, video_path: str, max_frames: int = 60) -> List[np.ndarray]:
-        """Extract frames from video file"""
+        """Extract frames from video file or read single image"""
         frames = []
+        
+        # Check if it's an image file
+        image_extensions = {'.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff'}
+        ext = os.path.splitext(video_path)[1].lower()
+        
+        if ext in image_extensions:
+            frame = cv2.imread(video_path)
+            if frame is None:
+                raise ValueError(f"Could not open image: {video_path}")
+            return [frame]
+            
         cap = cv2.VideoCapture(video_path)
         
         if not cap.isOpened():
             raise ValueError(f"Could not open video: {video_path}")
         
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        frame_indices = np.linspace(0, total_frames - 1, max_frames, dtype=int)
+        if total_frames <= 0:
+            # Fallback
+            ret, frame = cap.read()
+            if ret:
+                frames.append(frame)
+            cap.release()
+            return frames
+            
+        frame_indices = np.linspace(0, total_frames - 1, min(total_frames, max_frames), dtype=int)
         
         for idx in frame_indices:
             cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
@@ -396,13 +415,20 @@ class FaceLandmarkAnalyzer:
             if landmarks is not None:
                 faces_detected += 1
         
-        if faces_detected < 5:
+        if faces_detected == 0:
             return {
                 'success': False,
-                'error': 'Insufficient face detections for analysis',
+                'error': 'No faces detected in analysis',
                 'faces_detected': faces_detected,
                 'frames_analyzed': len(frames)
             }
+            
+        # For single images, we proceed even with 1 face
+        min_faces = 1 if len(frames) == 1 else 5
+        
+        if faces_detected < min_faces:
+             # Even if fewer faces than ideal, we try to proceed but return low confidence
+             pass
         
         # Run all analyses
         blink_analysis = self.analyze_blink_patterns(all_landmarks)

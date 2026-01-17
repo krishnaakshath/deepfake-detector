@@ -2,9 +2,31 @@
 Helper utilities for deepfake detection
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from datetime import datetime
 import json
+import numpy as np
+
+
+def convert_to_serializable(obj: Any) -> Any:
+    """
+    recursively convert numpy types to native python types for json serialization.
+    """
+    if isinstance(obj, dict):
+        return {k: convert_to_serializable(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_serializable(v) for v in obj]
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return convert_to_serializable(obj.tolist())
+    elif isinstance(obj, (np.bool_, bool)):
+        return bool(obj)
+    elif isinstance(obj, (np.str_, str)):
+        return str(obj)
+    return obj
 
 
 def generate_report(
@@ -230,7 +252,8 @@ def validate_file_extension(filename: str, allowed_video: bool = True,
     Returns:
         Tuple of (is_valid, file_type, error_message)
     """
-    video_extensions = {'.mp4', '.avi', '.mov', '.mkv', '.webm', '.wmv', '.flv'}
+    video_extensions = {'.mp4', '.avi', '.mov', '.mkv', '.webm', '.wmv', '.flv', 
+                       '.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff'}  # Added images
     audio_extensions = {'.mp3', '.wav', '.ogg', '.flac', '.m4a', '.aac', '.wma'}
     
     ext = '.' + filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
