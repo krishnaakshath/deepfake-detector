@@ -1,7 +1,7 @@
 # FastAPI and Server
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
-python-multipart==0.0.6
+python-multipart==0.0.18
 
 # AI/ML Libraries
 tensorflow==2.15.0
@@ -15,7 +15,7 @@ soundfile==0.12.1
 # Video/Image Processing
 opencv-python-headless==4.9.0.80
 mediapipe==0.10.9
-Pillow==10.2.0
+Pillow==10.3.0
 
 # Utilities
 python-dotenv==1.0.0
